@@ -1,10 +1,5 @@
 div button {
     float: right;
-    /* margin-left: -50%; */
     margin-top: 2.5em;
 
-}
-
-.panel-heading{
-    height: 100px;
-}
+} 

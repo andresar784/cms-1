@@ -2,13 +2,17 @@
     <div class="col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <button class="btn btn-danger ">Delete</button>
+                <h3>Bro. {{contact.name}} </h3>
+                <img src="{{contact.imageUrl}}" alt="{{contact.name}}"
+                    style="max-height: 120px;"> <button class="btn btn-danger">Delete</button>
                 <button class="btn btn-primary">Edit</button>
             </div>
+
             <div class="panel-body">
-                <h4 class="">Email:</h4>
-                <h4 class="">Phone:</h4>
+                <h4 class="">Email: {{ contact.email}}</h4>
+                <h4 class="">Phone: {{ contact.phone}}</h4>
             </div>
+
         </div>
     </div>
 </div>
