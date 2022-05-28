@@ -3,7 +3,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3>Contacts</h3>
-                <button class="btn btn-success" navbar-right>New Contact</button>
+                <button class="btn btn-success" navbar-right routerLink="new">New Contact</button>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -11,7 +11,6 @@
                         <cms-contact-item
                         *ngFor="let contactEl of contacts"
                         [contact]="contactEl"
-                        (click)="onSelected(contactEl)"                        
                         ></cms-contact-item>
                     </div>
                 </div>

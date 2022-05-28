@@ -3,9 +3,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3>Bro. {{contact.name}} </h3>
-                <img src="{{contact.imageUrl}}" alt="{{contact.name}}"
-                    style="max-height: 120px;"> <button class="btn btn-danger">Delete</button>
-                <button class="btn btn-primary">Edit</button>
+                <img src="{{contact.imageUrl}}" alt="{{contact.name}}" style="max-height: 120px;">
+                <a class="btn btn-danger pull-right" (click)="onDelete()">Delete</a>
+                <a class="btn btn-primary pull-right" [routerLink]="['edit']">Edit</a>
             </div>
 
             <div class="panel-body">
