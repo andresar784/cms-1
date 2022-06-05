@@ -35,12 +35,12 @@ export class ContactService {
     this.contacts.splice(pos, 1);
     let contactListClone = this.contacts.slice();
     this.contactListChangedEvent.next(contactListClone);
-    this.contactChangedEvent.emit(this.contacts.slice());
+    // this.contactChangedEvent.emit(this.contacts.slice());
   }
   getMaxId(): number {
     let maxId = 0;
-    for (let doc of this.contacts) {
-      let currentId = +doc.id;
+    for (let con of this.contacts) {
+      let currentId = +con.id;
       if (currentId > maxId) {
         maxId = currentId;
       }
