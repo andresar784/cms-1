@@ -1,1 +1,47 @@
-<h1>Documents-edits works</h1>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <label for="name">Document Title:</label>
+                    <input type="text" 
+                    id="name" 
+                    #name="ngModel" 
+                    name="name"
+                    required 
+                    [ngModel]="document?.name" 
+                    class="form-control" 
+                    size="120" 
+                    max="120">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <label for="description">Document Description:</label>
+                    <input type="text" id="description" name="description" [ngModel]="document?.description"  class="form-control" size="120" max="255">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 form-group">
+                    <label for="url">Document URL:</label>
+                    <input type="text"
+                     id="url" name="url" 
+                     #url="ngModel"
+                     required 
+                    
+                     [ngModel]="document?.url"
+                     class="form-control" 
+                     size="150" 
+                     max="255">
+                </div>
+            </div>
+            <div *ngIf="!url.valid && !name.valid" class="alert alert-danger">The Document Title and Document URL are required fields</div>
+            <div class="row">
+                <div class="col-xs-12 btn-toolbar">
+                    <button class="btn btn-success" [disabled]="!f.valid" type="submit">Save</button>
+                    <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

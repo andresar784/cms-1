@@ -49,7 +49,6 @@ export class DocumentService {
       }
     }
     return maxId;
-
   }
   addDocument(newDocument: Document) {
     if (!newDocument) {
