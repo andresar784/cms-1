@@ -18,7 +18,7 @@ export class DocumentService {
   } 
 
   getDocuments(): Document[] {
-    this.http.get('https://wdd430cms-64065-default-rtdb.firebaseio.com/documents.json')
+    this.http.get('http://localhost:3000/documents')
       .subscribe({
         next: (documents: Document[]) => {
           this.documents = documents;
@@ -40,14 +40,22 @@ export class DocumentService {
     if (!document) {
       return;
     }
-    const pos = this.documents.indexOf(document);
+    const pos = this.documents.findIndex(d => d.id === document.id);
     if (pos < 0) {
       return;
     }
-    this.documents.splice(pos, 1);
-    let documentListClone = this.documents.slice();
-    this.storeDocument();
-    // this.documentChangedEvent.emit(this.documents.slice());
+    // delete from database
+    this.http.delete('http://localhost:3000/documents/' + document.id)
+      .subscribe(
+        (response: Response) => {
+          console.log(response);
+          
+          this.documents.splice(pos, 1);
+          this.documents.sort((a, b) => a.name < b.name ? -1 : 0);
+          this.documentChangedEvent.next(this.documents.slice());
+          //this.sortAndSend();
+        }
+      );
   }
 
   getMaxId(): number {
@@ -60,43 +68,68 @@ export class DocumentService {
     }
     return maxId;
   }
-  addDocument(newDocument: Document) {
-    if (!newDocument) {
+  addDocument(document: Document) {
+    if (!document) {
       return;
     }
-    this.maxDocumentId++;
-    newDocument.id = String(this.maxDocumentId);
-    this.documents.push(newDocument);
-    let documentsListClone = this.documents.slice();
-    this.storeDocument();
+    // make sure id of the new Document is empty
+    document.id = '';
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    // add to database
+    this.http.post<{ message: string, document: Document }>('http://localhost:3000/documents',
+      document,
+      { headers: headers })
+      .subscribe(
+        (responseData) => {
+          // add new document to documents
+          this.documents.push(responseData.document);
+          this.documents.sort((a, b) => a.name < b.name ? -1 : 0);
+          this.documentChangedEvent.next(this.documents.slice());
+          //this.sortAndSend();
+        }
+      );
   }
 
+sortAndSend(){
+
+}
+
   updateDocument(originalDocument: Document, newDocument: Document) {
-    if (!originalDocument  || !newDocument) {
+    if (!originalDocument || !newDocument) {
       return;
     }
-    const pos = this.documents.indexOf(originalDocument);
+    const pos = this.documents.findIndex(d => d.id === originalDocument.id);
     if (pos < 0) {
       return;
     }
+    // set the id of the new Document to the id of the old Document
     newDocument.id = originalDocument.id;
-    this.documents[pos] = newDocument;
-    let documentsListClone = this.documents.slice();
-    // this.documentListChangedEvent.next(documentsListClone);
-    this.storeDocument();
+    // newDocument._id = originalDocument._id;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    // update database
+    this.http.put('http://localhost:3000/documents/' + originalDocument.id,
+      newDocument, { headers: headers })
+      .subscribe(
+        (response: Response) => {
+          this.documents[pos] = newDocument;
+          this.documents.sort((a, b) => a.name < b.name ? -1 : 0);
+          this.documentChangedEvent.next(this.documents.slice());
+          //this.sortAndSend();
+        }
+      );
   }
+
   storeDocument() {
     let documentsToStore = JSON.stringify(this.documents);
     // const headers = new HttpHeaders({
     //   'Content-Type': 'application-json'
     // })
-    this.http.put('https://wdd430cms-64065-default-rtdb.firebaseio.com/documents.json', documentsToStore,
+    this.http.put('http://localhost:3000/documents', documentsToStore,
     {
        headers: new HttpHeaders({'Content-Type': 'application-json'})
     }).subscribe(()=>{
         this.documentListChangedEvent.next(this.documents);
       })
   }
-
 }
 

@@ -2,11 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ThisReceiver } from '@angular/compiler';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Message } from './message.model';
-import { MOCKMESSAGES } from './MOCKMESSAGES';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class MessagesService {
   messageChangedEvent = new EventEmitter<Message[]>();
   messages: Message [] = [];
@@ -26,7 +26,7 @@ export class MessagesService {
     return maxId;
   }
   getMessages(): Message[]{
-    this.http.get('https://wdd430cms-64065-default-rtdb.firebaseio.com/messages.json')
+    this.http.get('http://localhost:3000/messages')
       .subscribe({
         next: (messages: Message[]) =>{
           this.messages = messages;
@@ -40,18 +40,21 @@ export class MessagesService {
   getMessage(id: string){
     return this.messages.find((message) => message.id == id)
   }
+
   addMessage(message: Message){
     this.messages.push(message);
     // this.messageChangedEvent.emit(this.messages.slice());
     this.storeMessages();
   }
+
   storeMessages(){
     let messageToStore = JSON.stringify(this.messages);
-    this.http.put('https://wdd430cms-64065-default-rtdb.firebaseio.com/messages.json', messageToStore,
+    this.http.put('http://localhost:3000/messages/', messageToStore,
     {
       headers: new HttpHeaders({'Content-Type': 'application-json'})
     }).subscribe(() => {
       this.messageChangedEvent.next(this.messages)
     })
   }
+  
 }
