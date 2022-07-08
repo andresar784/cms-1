@@ -60,7 +60,7 @@ router.put('/:id', (req, res, next) => {
             Contact.updateOne({ id: req.params.id }, contact)
                 .then(result => {
                     res.status(204).json({
-                        message: 'Document updated successfully'
+                        message: 'Contact updated successfully'
                     })
                 })
                 .catch(error => {

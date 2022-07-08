@@ -1,16 +1,16 @@
 var express = require('express');
 var router = express.Router();
 const Message = require('../models/message');
-var router = express.Router();
 const sequenceGenerator = require('./sequenceGenerator');
 
 router.get('/', (req, res, next) => {
     Message.find()
-        .then(messages => {
+        .then(result => {
         res.status(200).json({
             message: 'Messages fetched successfully!',
-            messages: messages
-          });
+            // messages: messages
+
+        });
       })
       .catch(error => {
         res.status(500).json({
@@ -30,7 +30,7 @@ router.post('/', (req, res, next) => {
         sender: req.body.sender
     });
 
-    document.save()
+    message.save()
         .then(createdMessage => {
             res.status(201).json({
                 message: 'Message added successfully',

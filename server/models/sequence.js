@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const sequenceSchema = new mongoose.Schema({
+const sequenceSchema = mongoose.Schema({
     maxDocumentId: { type: Number },
     maxMessageId: { type: Number },
     maxContactId: { type: Number }

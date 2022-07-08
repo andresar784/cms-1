@@ -19,11 +19,11 @@ export class ContactService {
   getContacts(): Contact[] {
     this.http.get('http://localhost:3000/contacts/')
     .subscribe({
-      next: (contacts: Contact[])=> {
-        this.contacts = contacts;
+      next: (contacts: any)=> {
+        this.contacts = contacts.contacts;
         this.maxContactId = this.getMaxId();
         this.contacts.sort((a, b) => (a.name < b.name) ? 1 : (a.name > b.name) ? -1 : 0);
-        //this.contactListChangedEvent.next(this.contacts.slice());
+        this.contactListChangedEvent.next(this.contacts.slice());
       },
       error: (e) => console.log(e.message),
     });
@@ -62,7 +62,7 @@ export class ContactService {
     }
 
     // delete from database
-    this.http.delete('http://localhost:3000/documents/' + contact.id)
+    this.http.delete('http://localhost:3000/contacts/' + contact.id)
       .subscribe(
         (response: Response) => {
           this.contacts.splice(pos, 1);
@@ -101,7 +101,7 @@ export class ContactService {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
     // add to database
     this.http.post<{ message: string, contact: Contact }>('http://localhost:3000/contacts',
-      document,
+      contact,
       { headers: headers })
       .subscribe(
         (responseData) => {
@@ -152,7 +152,7 @@ export class ContactService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     // update database
-    this.http.put('http://localhost:3000/documents/' + originalContact.id,
+    this.http.put('http://localhost:3000/contacts/' + originalContact.id,
       newContact, { headers: headers })
       .subscribe(
         (response: Response) => {

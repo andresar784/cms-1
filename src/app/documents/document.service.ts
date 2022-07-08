@@ -20,8 +20,8 @@ export class DocumentService {
   getDocuments(): Document[] {
     this.http.get('http://localhost:3000/documents')
       .subscribe({
-        next: (documents: Document[]) => {
-          this.documents = documents;
+        next: (documents: any) => {
+          this.documents = documents.documents;
           this.maxDocumentId = this.getMaxId();
           this.documents.sort((a, b) => (a.name < b.name) ? 1 : (a.name > b.name) ? -1 : 0);
           this.documentListChangedEvent.next(this.documents.slice());
