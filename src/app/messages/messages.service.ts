@@ -25,19 +25,19 @@ export class MessagesService {
     return maxId;
   }
   
-  getMessages(): Message[]{
+  getMessages(): Message[] {
     this.http.get('http://localhost:3000/messages/')
-      .subscribe(
-        (messages: any) => {
-          this.messages = messages.messages
-          console.log(this.messages)
-          this.maxMessageId = this.getMaxId()
-          //this.messages.sort((a, b) => (a.id < b.id) ? 1 : (a.id > b.id) ? -1 : 0)
-          this.messageChangedEvent.next(this.messages)
-        }
-      )
-      return null;
+    .subscribe({
+      next: (messages: any)=> {
+        this.messages = messages.messsages;
+        this.maxMessageId = this.getMaxId();
+        this.messageChangedEvent.next(this.messages.slice());
+      },
+      error: (e) => console.log(e.message),
+    });
+    return null;
   }
+
   getMessage(id: string){
     return this.messages.find((message) => message.id == id)
   }
@@ -70,7 +70,7 @@ export class MessagesService {
       { headers: headers })
       .subscribe(
         (responseData) => {
-          // add new document to documents
+          // add new message
           this.messages.push(responseData.message);
           // this.sortAndSend();
         }

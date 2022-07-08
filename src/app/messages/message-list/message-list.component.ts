@@ -18,6 +18,7 @@ export class MessageListComponent implements OnInit {
     subscribe(
       (messages: Message[])=> {this.messages = messages;})
   }
+  
   onAddMessage(message: Message){
     this.messages.push(message);
   }
