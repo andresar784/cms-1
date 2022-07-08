@@ -29,10 +29,10 @@ export class MessagesService {
     this.http.get('http://localhost:3000/messages/')
       .subscribe(
         (messages: any) => {
-          this.messages = messages.message
-          console.log(messages)
+          this.messages = messages.messages
+          console.log(this.messages)
           this.maxMessageId = this.getMaxId()
-          this.messages.sort((a, b) => (a.id < b.id) ? 1 : (a.id > b.id) ? -1 : 0)
+          //this.messages.sort((a, b) => (a.id < b.id) ? 1 : (a.id > b.id) ? -1 : 0)
           this.messageChangedEvent.next(this.messages)
         }
       )
